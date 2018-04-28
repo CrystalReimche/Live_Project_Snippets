@@ -1,0 +1,67 @@
+@model IEnumerable<ScheduleUsers.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.HireDate)</th>
+            <th>@Html.DisplayNameFor(model => model.Department)</th>
+            <th>@Html.DisplayNameFor(model => model.Position)</th>
+            <th>@Html.DisplayNameFor(model => model.Address)</th>
+            <th>@Html.DisplayNameFor(model => model.Fulltime)</th>
+            <th>@Html.DisplayNameFor(model => model.Email)</th>
+            <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
+            <th>@Html.DisplayNameFor(model => model.UserName)</th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+            <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+            <td>@Html.DisplayFor(modelItem => item.HireDate)</td>
+            <td>@Html.DisplayFor(modelItem => item.Department)</td>
+            <td>@Html.DisplayFor(modelItem => item.Position)</td>
+            <td>@Html.DisplayFor(modelItem => item.Address)</td>
+            <td>@Html.DisplayFor(modelItem => item.Fulltime)</td>
+            <td>@Html.DisplayFor(modelItem => item.Email)</td>
+            <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+            <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            
+                @Ajax.ActionLink("Details", "ViewUserDetails", "WorkTimeEvent", 
+                                 new { id = item.Id }, 
+                                 new AjaxOptions() { UpdateTargetId = "DetailsDivModal-" + @item.Id }, 
+                                 new { @data_target = "#detailsModal-" + @item.Id, @data_toggle = "modal"}) |
+
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+
+        /* *****************************************************************
+         *                      USER DETAIL MODAL
+         * ************************************************************** */
+        <div class="modal fade" id="detailsModal-@item.Id">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <btn class="close" data-dismiss="modal">&times;</btn>
+                        <h4 class="modal-title">User Details</h4>
+                    </div>
+                    <div class="modal-body" id="DetailsDivModal-@item.Id">
+                    </div>
+                    <div class="modal-footer"></div>
+                </div>
+            </div>
+        </div>
+     }
+ </table>

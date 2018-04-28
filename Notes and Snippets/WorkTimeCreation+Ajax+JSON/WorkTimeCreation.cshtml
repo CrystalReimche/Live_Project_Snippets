@@ -1,0 +1,36 @@
+<div class="form-group">
+		<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="Clock in" formaction=@Url.Action("Create", "WorkTimeEvent") formmethod="post" class="btn btn-default" id="clockInOutBtn" disabled/>
+		</div>
+</div>
+
+@******************************************************************************
+    *                       CHECK USER NAME AVAILABILITY
+    ************************************************************************** *@
+<script>
+    function UserCheck() {
+        $.post("@Url.Action("CheckForUserData", "WorkTimeEvent")",
+            {
+                userdata: $("#UserName").val()
+            },
+            function (data) {
+                @* Username is not in the Db, display text box red and keep btn disabled *@
+                if (data.UserVerification == 0) {
+                    $("#clockInOutBtn").prop('disabled', true).html('Clock in');
+                    $("#UserName").css("border-color", "Red");
+                }
+                @* Username is in the Db && doesn't have a start or end time, change btn to display Clock in *@
+                else if (data.UserVerification == 1) {
+                    $("#clockInOutBtn").prop('disabled', false).html('Clock in');
+                    $("#UserName").css("border-color", "Green");
+                    $("#currentWorkTimeEventHours").html(data.ClockInOut);
+                }
+                @* Username is in the Db && doesn't have an end time, change btn to display Clock out *@
+                else {  // data == 2
+                    $("#clockInOutBtn").prop('disabled', false).val('Clock out');
+                    $("#UserName").css("border-color", "Green");
+                    $("#currentWorkTimeEventHours").html(data.ClockInOut);
+                }
+            });
+    }
+</script>
